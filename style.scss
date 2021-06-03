@@ -1,0 +1,30 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.flex-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+table {
+  border-collapse: collapse;
+  margin: auto;
+  td {
+    border: 1px solid black;
+    padding: 5px;
+  }
+
+  .deletar {
+    border: none;
+  }
+}
+
+.add {
+  margin: 35px;
+}
+
