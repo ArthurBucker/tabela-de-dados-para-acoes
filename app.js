@@ -1,19 +1,23 @@
+//Mostrar local storage quando carregar a página
+document.addEventListener('DOMContentLoaded', Deposito.mostrarDeposito);
+
+
 //Adicionar fileira 
 document.querySelector('.grid').addEventListener('submit', (e) => {
   //Variáveis do formulário
-  const empresa = document.querySelector('.empresa').value;
-  const ticker = document.querySelector('.ticker').value;
-  const dataC = document.querySelector('.data-c').value;
-  const quantidade = Number(document.querySelector('.quantidade').value);
-  const precoC = Number(document.querySelector('.preco-c').value);
-  const totC = quantidade * precoC;
-  const dataV = document.querySelector('.data-v').value;
-  const precoV = Number(document.querySelector('.preco-v').value);
-  const totV = quantidade * precoV;
-  const tipo = document.querySelector('.tipo').value;
-  const ajuste = document.querySelector('.ajuste').value;
-  const resultado = (totV - totC) + Number(ajuste);
-  const mes = document.querySelector('.mes').value;
+  const empresa = document.querySelector('.empresa').value.toUpperCase(),
+        ticker = document.querySelector('.ticker').value.toUpperCase(),
+        dataC = document.querySelector('.data-c').value.toUpperCase(),
+        quantidade = Number(document.querySelector('.quantidade').value),
+        precoC = Number(document.querySelector('.preco-c').value),
+        totC = quantidade * precoC,
+        dataV = document.querySelector('.data-v').value,
+        precoV = Number(document.querySelector('.preco-v').value),
+        totV = quantidade * precoV,
+        tipo = document.querySelector('.tipo').value.toUpperCase(),
+        ajuste = Number(document.querySelector('.ajuste').value),
+        resultado = (totV - totC) + ajuste,
+        mes = document.querySelector('.mes').value.toUpperCase();
   
   
   //Init Tabela e UI
@@ -21,10 +25,11 @@ document.querySelector('.grid').addEventListener('submit', (e) => {
 
   const ui = new UI();
 
+  ui.erro(tabela);
   ui.addFileira(tabela);
+  Deposito.addDeposito(tabela);
 
-
-    e.preventDefault()
+  e.preventDefault()
 })
 
 //Deletar Fileira
@@ -32,5 +37,26 @@ document.querySelector('.corpo').addEventListener('click', (e) => {
   const ui = new UI()
   ui.delFileira(e);
 
-  e.preventDefault()
+  Deposito.delDeposito(
+    e.target.parentElement.parentElement.firstChild.nextSibling.nextSibling.nextSibling.textContent, 
+
+    e.target.parentElement.parentElement.firstChild.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.textContent, 
+
+    e.target.parentElement.parentElement.firstChild.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.textContent
+    );
+})
+
+document.querySelector('.apagar-tudo').addEventListener('click', () => {
+  document.querySelector('.corpo').innerHTML = '';
+  localStorage.clear()
+})
+
+//Calcular média
+document.querySelector('.calcular-media').addEventListener('click', () => {
+ Media.calcMedia()
+})
+
+//Gerar Gráfico
+document.querySelector('.gerar-grafico').addEventListener('click', () => {
+  Grafico.gerarGrafico()
 })

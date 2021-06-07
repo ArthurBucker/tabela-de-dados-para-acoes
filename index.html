@@ -14,16 +14,17 @@
       <span>Empresa</span><input type="text" class="empresa">
       <span>Ticker</span><input type="text" class="ticker">
       <span>Data da Compra</span><input type="date" class="data-c">
-      <span>Quantidade</span><input type="number" class="quantidade">
-      <span>Preço da Compra</span><input type="number" class="preco-c">
+      <span>Quantidade</span><input type="number" class="quantidade" step="any">
+      <span>Preço da Compra</span><input type="number" class="preco-c" step="any">
       <span>Data da Venda</span><input type="date" class="data-v">
-      <span>Preço da Venda</span><input type="number" class="preco-v">
+      <span>Preço da Venda</span><input type="number" class="preco-v" step="any">
       <span>Tipo</span><input type="text" class="tipo">
-      <span>Ajuste</span><input type="number" class="ajuste">
+      <span>* Ajuste</span><input type="number" class="ajuste" step="any">
       <span>Mês de fechamento</span><input type="text" class="mes">
       <input type="submit" class="add" value="Adicionar Ação">
    
   </form>
+  <p>* Campo não obrigatório</p>
   
   <table>
     <thead>
@@ -45,8 +46,25 @@
        
     </tbody>
   </table>
+
+  <button class="apagar-tudo">Apagar Tudo</button>
+  <h2 class="titulo-media">Média das Ações Repetidas</h2>
+  <button class="calcular-media">Calcular Média</button>
+  <div class="media">
+    <table>
+      <thead class="mediaH">
+        <td>Ticker</td>
+        <td>Média</td>
+      </thead>
+      <tbody class="mediaT"></tbody>
+    </table>
+  </div>
+  <div class="grafico">
+    <button class="gerar-grafico">Gerar Gráfico</button>
+    <div id="chart"></div>
+  </div>
   
-  
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
   <script src="tabela.js"></script>
   <script src="app.js"></script>
 </body>
