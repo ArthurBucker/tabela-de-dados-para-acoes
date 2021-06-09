@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', Deposito.mostrarDeposito);
 
 //Adicionar fileira 
 document.querySelector('.grid').addEventListener('submit', (e) => {
+  
   //Variáveis do formulário
   const empresa = document.querySelector('.empresa').value.toUpperCase(),
         ticker = document.querySelector('.ticker').value.toUpperCase(),
@@ -14,14 +15,18 @@ document.querySelector('.grid').addEventListener('submit', (e) => {
         dataV = document.querySelector('.data-v').value,
         precoV = Number(document.querySelector('.preco-v').value),
         totV = quantidade * precoV,
-        tipo = document.querySelector('.tipo').value.toUpperCase(),
-        ajuste = Number(document.querySelector('.ajuste').value),
-        resultado = (totV - totC) + ajuste,
-        mes = document.querySelector('.mes').value.toUpperCase();
-  
+        ajuste = Number(document.querySelector('.ajuste').value);
+  let   resultado;
+        if (totV === 0) {
+          resultado = totC - totV;
+        } else {
+          resultado = (totV - totC) + ajuste;
+        }
+        
+  console.log(resultado)
   
   //Init Tabela e UI
-  const tabela = new Tabela(empresa, ticker, dataC, quantidade, precoC, totC, dataV, precoV, totV, tipo, ajuste, resultado, mes);
+  const tabela = new Tabela(empresa, ticker, dataC, quantidade, precoC, totC, dataV, precoV, totV, ajuste, resultado);
 
   const ui = new UI();
 
@@ -47,8 +52,14 @@ document.querySelector('.corpo').addEventListener('click', (e) => {
 })
 
 document.querySelector('.apagar-tudo').addEventListener('click', () => {
-  document.querySelector('.corpo').innerHTML = '';
-  localStorage.clear()
+  let res = confirm('Você deseja apagar toda a tabela?');
+  if(res) {
+    let res2 = confirm('Tem certeza?');
+    if (res2){
+      document.querySelector('.corpo').innerHTML = '';
+      localStorage.clear()
+    }
+  }
 })
 
 //Calcular média

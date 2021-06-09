@@ -11,56 +11,80 @@
     <h1 class="titulo">TABELA</h1>
   <form action="" class="grid">
   
-      <span>Empresa</span><input type="text" class="empresa">
-      <span>Ticker</span><input type="text" class="ticker">
+      <span>Empresa</span><input type="text" class="empresa" placeholder="Nome da empresa">
+      <span>Ticker</span><input type="text" class="ticker" placeholder="Ticker da ação">
       <span>Data da Compra</span><input type="date" class="data-c">
-      <span>Quantidade</span><input type="number" class="quantidade" step="any">
-      <span>Preço da Compra</span><input type="number" class="preco-c" step="any">
-      <span>Data da Venda</span><input type="date" class="data-v">
-      <span>Preço da Venda</span><input type="number" class="preco-v" step="any">
-      <span>Tipo</span><input type="text" class="tipo">
-      <span>* Ajuste</span><input type="number" class="ajuste" step="any">
-      <span>Mês de fechamento</span><input type="text" class="mes">
-      <input type="submit" class="add" value="Adicionar Ação">
+      <span>Quantidade</span><input type="number" class="quantidade" step="any" placeholder="00">
+      <span>Preço da Compra</span><input type="number" class="preco-c" step="any" placeholder="0,00">
+      <span><span class="mini">*</span>Data da Venda</span><input type="date" class="data-v">
+      <span><span class="mini">*</span>Preço da Venda</span><input type="number" class="preco-v" step="any" placeholder="0,00">
+      <span><span class="mini">*</span> Ajuste</span><input type="number" class="ajuste" step="any" placeholder="0,00">
+      <input type="submit" class="add botao-geral" value="Adicionar Ação">
    
   </form>
-  <p>* Campo não obrigatório</p>
+  <p class="obs">* Campo não obrigatório</p>
   
-  <table>
+  <table class="container">
     <thead>
-      <td>Empresa</td>
-      <td>Ticker</td>
-      <td>Data da Compra</td>
-      <td>Quantidade</td>
-      <td>Preço da Compra</td>
-      <td>Total da Compra</td>
-      <td>Data da Venda</td>
-      <td>Preço da Venda</td>
-      <td>Total da Venda</td>
-      <td>Tipo</td>
-      <td>Ajuste</td>
-      <td>Resultado</td>
-      <td>Mês de Fechamento</td>
+      <tr>
+        <th>
+          <h1>Empresa</h1>
+        </th>
+        <th>
+          <h1>Ticker</h1>
+        </th>
+        <th>
+          <h1>Data da Compra</h1>
+        </th>
+        <th>
+          <h1>Quantidade</h1>
+        </th>
+        <th>
+          <h1>Preço da Compra</h1>
+        </th>
+        <th>
+          <h1>Total da Compra</h1>
+        </th>
+        <th>
+          <h1>Data da Venda</h1>
+        </th>
+        <th>
+          <h1>Preço da Venda</h1>
+        </th>
+        <th>
+          <h1>Total da Venda</h1>
+        </th>
+        <th>
+          <h1>Ajuste</h1>
+        </th>
+        <th>
+          <h1>Resultado</h1>
+        </th>
+      </tr>
     </thead>
-    <tbody class="corpo">
-       
+    <tbody class="corpo"> 
     </tbody>
   </table>
 
-  <button class="apagar-tudo">Apagar Tudo</button>
-  <h2 class="titulo-media">Média das Ações Repetidas</h2>
-  <button class="calcular-media">Calcular Média</button>
+  <button class="apagar-tudo botao-geral">Apagar Tudo</button>
+  <h2 class="titulo-media">Média dos Tickers Repetidos</h2>
+  <button class="calcular-media botao-geral">Calcular Média</button>
   <div class="media">
-    <table>
+    <table class="container tamanho">
       <thead class="mediaH">
-        <td>Ticker</td>
-        <td>Média</td>
+        <th>
+          <h1>Ticker</h1>
+        </th>
+        <th>
+          <h1>Média</h1>
+        </th>
       </thead>
       <tbody class="mediaT"></tbody>
     </table>
   </div>
   <div class="grafico">
-    <button class="gerar-grafico">Gerar Gráfico</button>
+    <h2 class="titulo-media">Gráfico Pizza</h2>
+    <button class="gerar-grafico botao-geral">Gerar Gráfico</button>
     <div id="chart"></div>
   </div>
   

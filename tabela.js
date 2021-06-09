@@ -1,5 +1,5 @@
 class Tabela {
-  constructor (empresa, ticker, dataC, quantidade, precoC, totC, dataV, precoV, totV, tipo, ajuste, resultado, mes, posicao ) {
+  constructor (empresa, ticker, dataC, quantidade, precoC, totC, dataV, precoV, totV, ajuste, resultado ) {
     this.empresa = empresa;
     this.ticker = ticker;
     this.dataC = dataC;
@@ -9,11 +9,8 @@ class Tabela {
     this.dataV = dataV;
     this.precoV = precoV;
     this.totV = totV;
-    this.tipo = tipo;
     this.ajuste = ajuste;
     this.resultado = resultado;
-    this.mes = mes;
-    this.posicao = posicao;
   }
 }
 
@@ -29,18 +26,16 @@ class UI {
       <td>${tabela.ticker}</td>
       <td>${tabela.dataC}</td>
       <td>${tabela.quantidade}</td>
-      <td>${tabela.precoC}</td>
-      <td>${tabela.totC}</td>
+      <td>R$ ${tabela.precoC.toFixed(2)}</td>
+      <td>R$ ${tabela.totC.toFixed(2)}</td>
       <td>${tabela.dataV}</td>
-      <td>${tabela.precoV}</td>
-      <td>${tabela.totV}</td>
-      <td>${tabela.tipo}</td>
-      <td>${tabela.ajuste}</td>
-      <td>${tabela.resultado}</td>
-      <td>${tabela.mes}</td>
+      <td>R$ ${tabela.precoV.toFixed(2)}</td>
+      <td>R$ ${tabela.totV.toFixed(2)}</td>
+      <td>R$ ${tabela.ajuste.toFixed(2)}</td>
+      <td>R$ ${tabela.resultado.toFixed(2)}</td>
       <td class="deletar"><a href="#" class="delete">X</a></td>
       `;
-    if (tabela.empresa !== '' && tabela.ticker !== '' &&tabela.dataC !== '' && tabela.quantidade !== '' && tabela.precoC !== '' && tabela.dataV !== '' && tabela.precoV!== '' && tabela.tipo !== '' && tabela.mes !== '') {
+    if (tabela.empresa !== '' && tabela.ticker !== '' &&tabela.dataC !== '' && tabela.quantidade !== '' && tabela.precoC !== '') {
       tcorpo.appendChild(tr);
       const ui = new UI();
       
@@ -49,7 +44,7 @@ class UI {
 
   //Erro
   erro(tabela) {
-    if (tabela.empresa === '' || tabela.ticker === '' ||tabela.dataC === '' || tabela.quantidade === '' || tabela.precoC === '' || tabela.dataV === '' || tabela.precoV=== '' || tabela.tipo === '' || tabela.mes === '') {
+    if (tabela.empresa === '' || tabela.ticker === '' ||tabela.dataC === '' || tabela.quantidade === '' || tabela.precoC === '' ) {
       alert ('Favor preencher campos obrigatórios!');
     }
   }
@@ -62,9 +57,8 @@ class UI {
         precoC = (document.querySelector('.preco-c')),
         dataV = document.querySelector('.data-v'),
         precoV = (document.querySelector('.preco-v')),
-        tipo = document.querySelector('.tipo'),
-        ajuste = document.querySelector('.ajuste'),
-        mes = document.querySelector('.mes');
+        ajuste = document.querySelector('.ajuste');
+     
 
   empresa.value = '';
   ticker.value = '';
@@ -73,9 +67,8 @@ class UI {
   precoC.value = '';
   dataV.value = '';
   precoV.value = '';
-  tipo.value = '';
   ajuste.value = '';
-  mes.value = '';
+  
 
   }
   
@@ -107,7 +100,7 @@ class Deposito {
 
   //Add local storage
   static addDeposito(fileira) {
-    if (fileira.empresa !== '' && fileira.ticker !== '' &&fileira.dataC !== '' && fileira.quantidade !== '' && fileira.precoC !== '' && fileira.dataV !== '' && fileira.precoV!== '' && fileira.tipo !== '' && fileira.mes !== '') {
+    if (fileira.empresa !== '' && fileira.ticker !== '' &&fileira.dataC !== '' && fileira.quantidade !== '' && fileira.precoC !== '') {
     const fileiras = Deposito.pegarFileiras();
 
     fileiras.push(fileira);
@@ -132,10 +125,12 @@ class Deposito {
   static delDeposito(ticker, dataC, precoC) {
     const fileiras = Deposito.pegarFileiras();
     fileiras.forEach((fileira, index) => {
-      if (fileira.ticker === ticker && fileira.dataC === dataC && fileira.precoC == precoC) {
+      if (fileira.ticker === ticker && fileira.dataC === dataC && `R$ ${fileira.precoC.toFixed(2)}` == precoC) {
         fileiras.splice(index, 1);
       }
     })
+    console.log(ticker, dataC, precoC)
+    
     localStorage.setItem('fileiras', JSON.stringify(fileiras));
   }
 }
@@ -146,12 +141,17 @@ class Deposito {
       const fileiras = Deposito.pegarFileiras();
       const media = document.querySelector('.media')
       const mediaT = document.querySelector('.mediaT');
-      let arrayTickers = [];
-      let objeto1 = [];
-      let objeto2 = [];
-      let objeto3 = [];
-      let objeto4 = [];
-      let objeto5 = [];
+      let arrayTickers = [],
+          objeto1 = [],
+          objeto2 = [],
+          objeto3 = [],
+          objeto4 = [],
+          objeto5 = [],
+          objeto6 = [],
+          objeto7 = [],
+          objeto8 = [],
+          objeto9 = [],
+          objeto10 = [];
 
       mediaT.innerHTML ='';
       //Achar e inserir valores duplicados
@@ -159,146 +159,264 @@ class Deposito {
         arrayTickers.push(fileira.ticker);
       })
       const verificador = new Set(arrayTickers).size !== arrayTickers.length;
+      if (!verificador) {
+        alert('Você não possui ações com ticker(s) repetido(s)')
+      } 
       if (verificador === true) {
         let acharDuplicatas = arr => arr.filter((item, index) => arr.indexOf(item) != index);
         let arrU = [...new Set(acharDuplicatas(arrayTickers))];
-        fileiras.forEach(fileira => {
-          for (let i = 0; i < arrU.length; i++) {
-            if (fileira.ticker === arrU[i]) {
-              if(i === 0) {
-                objeto1.push({
-                  ticker: fileira.ticker,
-                  quantidade: fileira.quantidade,
-                  total: fileira.totC
-                })
-              }
-                
-              if(i === 1) {
-                objeto2.push({
-                  ticker: fileira.ticker,
-                  quantidade: fileira.quantidade,
-                  total: fileira.totC
-                })
-              }
-              if(i === 2) {
-                objeto3.push({
-                  ticker: fileira.ticker,
-                  quantidade: fileira.quantidade,
-                  total: fileira.totC
-                })
-              }
-              if(i === 3) {
-                objeto4.push({
-                  ticker: fileira.ticker,
-                  quantidade: fileira.quantidade,
-                  total: fileira.totC
-                })
-              }
-              if(i === 4) {
-                objeto5.push({
-                  ticker: fileira.ticker,
-                  quantidade: fileira.quantidade,
-                  total: fileira.totC
-                })
+        if(arrU.length > 10) {
+          alert('Sinto muito! O limite de ações com tickers repetidos foi atingido.(10)')
+        } else  {
+          fileiras.forEach(fileira => {
+            for (let i = 0; i < arrU.length; i++) {
+              if (fileira.ticker === arrU[i] && arrU.length <= 10) {
+                if(i === 0) {
+                  objeto1.push({
+                    ticker: fileira.ticker,
+                    quantidade: fileira.quantidade,
+                    total: fileira.totC
+                  })
+                }
+                  
+                if(i === 1) {
+                  objeto2.push({
+                    ticker: fileira.ticker,
+                    quantidade: fileira.quantidade,
+                    total: fileira.totC
+                  })
+                }
+                if(i === 2) {
+                  objeto3.push({
+                    ticker: fileira.ticker,
+                    quantidade: fileira.quantidade,
+                    total: fileira.totC
+                  })
+                }
+                if(i === 3) {
+                  objeto4.push({
+                    ticker: fileira.ticker,
+                    quantidade: fileira.quantidade,
+                    total: fileira.totC
+                  })
+                }
+                if(i === 4) {
+                  objeto5.push({
+                    ticker: fileira.ticker,
+                    quantidade: fileira.quantidade,
+                    total: fileira.totC
+                  })
+                }
+                if(i === 5) {
+                  objeto6.push({
+                    ticker: fileira.ticker,
+                    quantidade: fileira.quantidade,
+                    total: fileira.totC
+                  })
+                }
+                  
+                if(i === 6) {
+                  objeto7.push({
+                    ticker: fileira.ticker,
+                    quantidade: fileira.quantidade,
+                    total: fileira.totC
+                  })
+                }
+                if(i === 7) {
+                  objeto8.push({
+                    ticker: fileira.ticker,
+                    quantidade: fileira.quantidade,
+                    total: fileira.totC
+                  })
+                }
+                if(i === 8) {
+                  objeto9.push({
+                    ticker: fileira.ticker,
+                    quantidade: fileira.quantidade,
+                    total: fileira.totC
+                  })
+                }
+                if(i === 9) {
+                  objeto10.push({
+                    ticker: fileira.ticker,
+                    quantidade: fileira.quantidade,
+                    total: fileira.totC
+                  })
+                }
               }
             }
-          }
-        })
-      }
-      
-      //Média dos valores duplicados
-      if (!verificador) {
-        alert('Você não possui ações com ticker(s) repetido(s)')
-      } else {
-       media.style.display = 'block';
-        let media1 = 0,
-          media2 = 0,
-          media3 = 0,
-          media4 = 0,
-          media5 = 0,
-          somaQ1 = 0,
-          somaQ2 = 0,
-          somaQ3 = 0,
-          somaQ4 = 0,
-          somaQ5 = 0,
-          somaT1 = 0,
-          somaT2 = 0,
-          somaT3 = 0,
-          somaT4 = 0,
-          somaT5 = 0;
-      
-      
-      objeto1.forEach(obj => {
-         somaQ1 += obj.quantidade;
-         somaT1 += obj.total;
-         media1 = somaT1 / somaQ1
-      })
-      objeto2.forEach(obj => {
-         somaQ2 += obj.quantidade;
-         somaT2 += obj.total;
-         media2 = somaT2 / somaQ2
-      })
-      objeto3.forEach(obj => {
-         somaQ3 += obj.quantidade;
-         somaT3 += obj.total;
-         media3 = somaT3 / somaQ3
-      })
-      objeto4.forEach(obj => {
-         somaQ4 += obj.quantidade;
-         somaT4 += obj.total;
-         media4 = somaT4 / somaQ4
-      })
-      objeto5.forEach(obj => {
-         somaQ5 += obj.quantidade;
-         somaT5 += obj.total;
-         media5 = somaT5 / somaQ5
-      })
+          })
 
-      if(objeto1[0] !== undefined) {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-        <td>${objeto1[0]['ticker']}</td>
-        <td>${media1}</td>
-        `
-        mediaT.appendChild(tr);
-      }
-      if(objeto2[0] !== undefined) {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-        <td>${objeto2[0]['ticker']}</td>
-        <td>${media2}</td>
-        `
-        mediaT.appendChild(tr);
-      }
-      if(objeto3[0] !== undefined) {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-        <td>${objeto3[0]['ticker']}</td>
-        <td>${media3}</td>
-        `
-        mediaT.appendChild(tr);
-      }
-      if(objeto4[0] !== undefined) {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-        <td>${objeto4[0]['ticker']}</td>
-        <td>${media4}</td>
-        `
-        mediaT.appendChild(tr);
-      }
-      if(objeto5[0] !== undefined) {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-        <td>${objeto5[0]['ticker']}</td>
-        <td>${media5}</td>
-        `
-        mediaT.appendChild(tr);
-      }
-      
-      }
-      
-  }
+          //Média dos valores duplicados
+          media.style.display = 'block';
+          let media1 = 0,
+              media2 = 0,
+              media3 = 0,
+              media4 = 0,
+              media5 = 0,
+              media6 = 0,
+              media7 = 0,
+              media8 = 0,
+              media9 = 0,
+              media10 = 0,
+              somaQ1 = 0,
+              somaQ2 = 0,
+              somaQ3 = 0,
+              somaQ4 = 0,
+              somaQ5 = 0,
+              somaQ6 = 0,
+              somaQ7 = 0,
+              somaQ8 = 0,
+              somaQ9 = 0,
+              somaQ10 = 0,
+              somaT1 = 0,
+              somaT2 = 0,
+              somaT3 = 0,
+              somaT4 = 0,
+              somaT5 = 0,
+              somaT6 = 0,
+              somaT7 = 0,
+              somaT8 = 0,
+              somaT9 = 0,
+              somaT10 = 0;
+        
+        
+          objeto1.forEach(obj => {
+            somaQ1 += obj.quantidade;
+            somaT1 += obj.total;
+            media1 = somaT1 / somaQ1
+          })
+          objeto2.forEach(obj => {
+            somaQ2 += obj.quantidade;
+            somaT2 += obj.total;
+            media2 = somaT2 / somaQ2
+          })
+          objeto3.forEach(obj => {
+            somaQ3 += obj.quantidade;
+            somaT3 += obj.total;
+            media3 = somaT3 / somaQ3
+          })
+          objeto4.forEach(obj => {
+            somaQ4 += obj.quantidade;
+            somaT4 += obj.total;
+            media4 = somaT4 / somaQ4
+          })
+          objeto5.forEach(obj => {
+            somaQ5 += obj.quantidade;
+            somaT5 += obj.total;
+            media5 = somaT5 / somaQ5
+          })
+          objeto6.forEach(obj => {
+            somaQ6 += obj.quantidade;
+            somaT6 += obj.total;
+            media6 = somaT6 / somaQ6
+          })
+          objeto7.forEach(obj => {
+            somaQ7 += obj.quantidade;
+            somaT7 += obj.total;
+            media7 = somaT7 / somaQ7
+          })
+          objeto8.forEach(obj => {
+            somaQ8 += obj.quantidade;
+            somaT8 += obj.total;
+            media8 = somaT8 / somaQ8
+          })
+          objeto9.forEach(obj => {
+            somaQ9 += obj.quantidade;
+            somaT9 += obj.total;
+            media9 = somaT9 / somaQ9
+          })
+          objeto10.forEach(obj => {
+            somaQ10 += obj.quantidade;
+            somaT10 += obj.total;
+            media10 = somaT10 / somaQ10
+          })
   
+          if(objeto1[0] !== undefined) {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+            <td>${objeto1[0]['ticker']}</td>
+            <td>R$ ${media1.toFixed(2)}</td>
+            `
+            mediaT.appendChild(tr);
+          }
+          if(objeto2[0] !== undefined) {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+            <td>${objeto2[0]['ticker']}</td>
+            <td>R$ ${media2.toFixed(2)}</td>
+            `
+            mediaT.appendChild(tr);
+          }
+          if(objeto3[0] !== undefined) {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+            <td>${objeto3[0]['ticker']}</td>
+            <td>R$ ${media3.toFixed(2)}</td>
+            `
+            mediaT.appendChild(tr);
+          }
+          if(objeto4[0] !== undefined) {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+            <td>${objeto4[0]['ticker']}</td>
+            <td>R$ ${media4.toFixed(2)}</td>
+            `
+            mediaT.appendChild(tr);
+          }
+          if(objeto5[0] !== undefined) {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+            <td>${objeto5[0]['ticker']}</td>
+            <td>R$ ${media5.toFixed(2)}</td>
+            `
+            mediaT.appendChild(tr);
+          }
+          if(objeto6[0] !== undefined) {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+            <td>${objeto6[0]['ticker']}</td>
+            <td>R$ ${media6.toFixed(2)}</td>
+            `
+            mediaT.appendChild(tr);
+          }
+          if(objeto7[0] !== undefined) {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+            <td>${objeto7[0]['ticker']}</td>
+            <td>R$ ${media7.toFixed(2)}</td>
+            `
+            mediaT.appendChild(tr);
+          }
+          if(objeto8[0] !== undefined) {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+            <td>${objeto8[0]['ticker']}</td>
+            <td>R$ ${media8.toFixed(2)}</td>
+            `
+            mediaT.appendChild(tr);
+          }
+          if(objeto9[0] !== undefined) {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+            <td>${objeto9[0]['ticker']}</td>
+            <td>R$ ${media9.toFixed(2)}</td>
+            `
+            mediaT.appendChild(tr);
+          }
+          if(objeto10[0] !== undefined) {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+            <td>${objeto10[0]['ticker']}</td>
+            <td>R$ ${media10.toFixed(2)}</td>
+            `
+            mediaT.appendChild(tr);
+          }
+          
+        mediaT.scrollIntoView();
+      } 
+    }
+  }
 }
 
 //Gráfico
@@ -314,7 +432,12 @@ class Grafico {
           objeto2 = [],
           objeto3 = [],
           objeto4 = [],
-          objeto5 = [];
+          objeto5 = [],
+          objeto6 = [],
+          objeto7 = [],
+          objeto8 = [],
+          objeto9 = [],
+          objeto10 = [];
 
       //Achar e inserir valores duplicados
       fileiras.forEach(fileira => {
@@ -339,99 +462,184 @@ class Grafico {
             }
           })
         }
-        fileiras.forEach(fileira => {
-          for (let i = 0; i < arrU.length; i++) {
-            if (fileira.ticker === arrU[i]) {
-              if(i === 0) {
-                objeto1.push({
-                  ticker: fileira.ticker,
-                  total: fileira.totC
-                })
-              }
-                
-              if(i === 1) {
-                objeto2.push({
-                  ticker: fileira.ticker,
-                  total: fileira.totC
-                })
-              }
-              if(i === 2) {
-                objeto3.push({
-                  ticker: fileira.ticker,
-                  total: fileira.totC
-                })
-              }
-              if(i === 3) {
-                objeto4.push({
-                  ticker: fileira.ticker,
-                  total: fileira.totC
-                })
-              }
-              if(i === 4) {
-                objeto5.push({
-                  ticker: fileira.ticker,
-                  total: fileira.totC
-                })
+        if (arrU.length > 10) {
+          alert('Sinto muito! Não é possível gerar um gráfico com mais de 10 ações que se repetem!')
+        } else {
+          fileiras.forEach(fileira => {
+            for (let i = 0; i < arrU.length; i++) {
+              if (fileira.ticker === arrU[i] && arrU.length <= 10) {
+                if(i === 0) {
+                  objeto1.push({
+                    ticker: fileira.ticker,
+                    total: fileira.totC
+                  })
+                }
+                  
+                if(i === 1) {
+                  objeto2.push({
+                    ticker: fileira.ticker,
+                    total: fileira.totC
+                  })
+                }
+                if(i === 2) {
+                  objeto3.push({
+                    ticker: fileira.ticker,
+                    total: fileira.totC
+                  })
+                }
+                if(i === 3) {
+                  objeto4.push({
+                    ticker: fileira.ticker,
+                    total: fileira.totC
+                  })
+                }
+                if(i === 4) {
+                  objeto5.push({
+                    ticker: fileira.ticker,
+                    total: fileira.totC
+                  })
+                }
+                if(i === 5) {
+                  objeto6.push({
+                    ticker: fileira.ticker,
+                    total: fileira.totC
+                  })
+                }
+                  
+                if(i === 6) {
+                  objeto7.push({
+                    ticker: fileira.ticker,
+                    total: fileira.totC
+                  })
+                }
+                if(i === 7) {
+                  objeto8.push({
+                    ticker: fileira.ticker,
+                    total: fileira.totC
+                  })
+                }
+                if(i === 8) {
+                  objeto9.push({
+                    ticker: fileira.ticker,
+                    total: fileira.totC
+                  })
+                }
+                if(i === 9) {
+                  objeto10.push({
+                    ticker: fileira.ticker,
+                    total: fileira.totC
+                  })
+                }
               }
             }
-          }
+          })
+          //Soma dos totais dos valores duplicados
+          let somaT1 = 0,
+              somaT2 = 0,
+              somaT3 = 0,
+              somaT4 = 0,
+              somaT5 = 0,
+              somaT6 = 0,
+              somaT7 = 0,
+              somaT8 = 0,
+              somaT9 = 0,
+              somaT10 = 0;
+        
+        objeto1.forEach(obj => {
+           somaT1 += obj.total;
         })
-        //Soma dos totais dos valores duplicados
-        let somaT1 = 0,
-            somaT2 = 0,
-            somaT3 = 0,
-            somaT4 = 0,
-            somaT5 = 0;
-      
-      objeto1.forEach(obj => {
-         somaT1 += obj.total;
-      })
-      objeto2.forEach(obj => {
-         somaT2 += obj.total;
-      })
-      objeto3.forEach(obj => {  
-         somaT3 += obj.total;
-      })
-      objeto4.forEach(obj => {
-         somaT4 += obj.total;
-      })
-      objeto5.forEach(obj => { 
-         somaT5 += obj.total;
-      })
-
-      
-      if(objeto1[0] !== undefined) {
-        objTotal.push({
-          ticker: objeto1[0]['ticker'],
-          totC: somaT1
+        objeto2.forEach(obj => {
+           somaT2 += obj.total;
         })
-      }
-      if(objeto2[0] !== undefined) {
-        objTotal.push({
-          ticker: objeto2[0]['ticker'],
-          totC: somaT2
+        objeto3.forEach(obj => {  
+           somaT3 += obj.total;
         })
-      }
-      if(objeto3[0] !== undefined) {
-        objTotal.push({
-          ticker: objeto3[0]['ticker'],
-          totC: somaT3
+        objeto4.forEach(obj => {
+           somaT4 += obj.total;
         })
-      }
-      if(objeto4[0] !== undefined) {
-        objTotal.push({
-          ticker: objeto4[0]['ticker'],
-          totC: somaT4
+        objeto5.forEach(obj => { 
+           somaT5 += obj.total;
         })
-      }
-      if(objeto5[0] !== undefined) {
-        objTotal.push({
-          ticker: objeto5[0]['ticker'],
-          totC: somaT5
+        objeto6.forEach(obj => {
+           somaT6 += obj.total;
         })
-      } 
+        objeto7.forEach(obj => {
+           somaT7 += obj.total;
+        })
+        objeto8.forEach(obj => {  
+           somaT8 += obj.total;
+        })
+        objeto9.forEach(obj => {
+           somaT9 += obj.total;
+        })
+        objeto10.forEach(obj => { 
+           somaT10 += obj.total;
+        })
+  
+        
+        if(objeto1[0] !== undefined) {
+          objTotal.push({
+            ticker: objeto1[0]['ticker'],
+            totC: somaT1
+          })
+        }
+        if(objeto2[0] !== undefined) {
+          objTotal.push({
+            ticker: objeto2[0]['ticker'],
+            totC: somaT1
+          })
+        }
+        if(objeto3[0] !== undefined) {
+          objTotal.push({
+            ticker: objeto3[0]['ticker'],
+            totC: somaT1
+          })
+        }
+        if(objeto4[0] !== undefined) {
+          objTotal.push({
+            ticker: objeto4[0]['ticker'],
+            totC: somaT1
+          })
+        }
+        if(objeto5[0] !== undefined) {
+          objTotal.push({
+            ticker: objeto5[0]['ticker'],
+            totC: somaT1
+          })
+        } 
+        if(objeto6[0] !== undefined) {
+          objTotal.push({
+            ticker: objeto6[0]['ticker'],
+            totC: somaT1
+          })
+        }
+        if(objeto7[0] !== undefined) {
+          objTotal.push({
+            ticker: objeto7[0]['ticker'],
+            totC: somaT1
+          })
+        }
+        if(objeto8[0] !== undefined) {
+          objTotal.push({
+            ticker: objeto8[0]['ticker'],
+            totC: somaT1
+          })
+        }
+        if(objeto9[0] !== undefined) {
+          objTotal.push({
+            ticker: objeto9[0]['ticker'],
+            totC: somaT1
+          })
+        }
+        if(objeto10[0] !== undefined) {
+          objTotal.push({
+            ticker: objeto10[0]['ticker'],
+            totC:  somaT1
+          })
+        } 
+      }   
     } 
-    //Se não ter duplicatas
+    //Se não tiver duplicatas
     else {
       fileiras.forEach(fileira => {
         objTotal.push({
@@ -468,6 +676,10 @@ class Grafico {
     };
 
     var chart = new ApexCharts(document.querySelector("#chart"), options);
-    chart.render();
+    if (objTotal.length > 0) {
+      chart.render();
+    document.querySelector('#chart').scrollIntoView()
+    }
+    
   }
 }
