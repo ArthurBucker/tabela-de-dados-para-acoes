@@ -424,6 +424,10 @@ class Grafico {
   static gerarGrafico() {
     document.querySelector('#chart').innerHTML = '';
     const fileiras = Deposito.pegarFileiras();
+    console.log(fileiras)
+    if (fileiras.length === 0) {
+      alert('Favor adicionar ação à tabela!')
+    }
       let objTotal = [],
           arrayTickers = [],
           valoresObjTotal = [],
